@@ -77,13 +77,8 @@ def compute_stats(ticker: str, start: Optional[date], end: Optional[date]) -> Op
     try:
         # Fetch OHLCV data from Yahoo Finance via yfinance
         # Note: end + 1 day ensures that the end date is inclusive.
-        df: pd.DataFrame = yf.download(
-            tickers=ticker,
-            start=start_d.isoformat(),
-            end=(end_d + timedelta(days=1)).isoformat(),  # inclusive end
-            progress=False,
-            auto_adjust=False,
-            threads=False,
+        t = yf.Ticker(ticker)
+        df: pd.DataFrame = t.history(start=start_d, end=end_d + timedelta(days=1)
         )
     except Exception as e:
         # Wrap upstream errors as ValueError so the API returns 400 instead of 500.
