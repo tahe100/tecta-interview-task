@@ -65,7 +65,7 @@ source .venv/bin/activate
 ### 2. Install dependencies
 
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ### 3. Start API
