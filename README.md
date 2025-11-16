@@ -170,3 +170,46 @@ Health check endpoint.
 | `start > end`            | API returns 400  |
 
 All error cases are covered in unit tests.
+
+## CI/CD Pipeline Outline
+
+### 1. On every push (CI – automated test job)
+GitHub Actions runner automatically performs the following steps:
+
+- **Checkout repository**
+- **Set up Python environment**
+- **Install dependencies**:
+  ```
+  pip install -r requirements.txt
+  ```
+- **Run tests using pytest**
+- **Fail the pipeline automatically** if any test fails
+
+---
+
+### 2. On push to `main` (automated build & publish job)
+GitHub Actions will:
+
+- **Checkout repository**
+- **Log in to the container registry** (e.g., Docker Hub or GHCR)
+- **Build Docker image**:
+  ```
+  docker build -t my-org/tecta-stats-api:latest .
+  ```
+- **Push the image** to the registry
+
+---
+
+### 3. Deploy step (CD – automated deploy job)
+Triggered automatically **after a successful image push**:
+
+- **SSH into the target server** (from the GitHub Actions deploy job)
+- **Pull the latest image**:
+  ```
+  docker pull my-org/tecta-stats-api:latest
+  ```
+- **Stop the old container**, if it is running
+- **Start a new container**:
+  ```
+  docker run -d -p 8000:8000 --name tecta-stats-api my-org/tecta-stats-api:latest
+  ```
