@@ -58,7 +58,7 @@ tecta-interview-task/
 ### 1. Create environment
 
 ```bash
-python3 -m venv .venv
+python3.11 -m venv .venv
 source .venv/bin/activate
 ```
 
@@ -71,7 +71,7 @@ pip install -r requirements.txt
 ### 3. Start API
 
 ```bash
-uvicorn app.main:app --reload --port 8000
+uvicorn app.main:app --port 8000
 ```
 
 ### 4. Example request
@@ -85,7 +85,7 @@ http://localhost:8000/api/stats?ticker=MSFT&start=2023-01-01&end=2023-12-31
 ## 🧪 Run Tests
 
 ```bash
-pytest -q
+python -m pytest -q 
 ```
 
 Tests use **monkeypatch**, so **no real network calls** occur.
